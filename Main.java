@@ -15,6 +15,9 @@ public class Main {
      */
     public static void main(String[] args) {
         System.out.println("Hello world");
+        // preguntar por los datos para armar todas las clases pertenecientes a Persona
+        // preguntar por bool extranjero, hacer un if para llamar a uno de los 2 constructores y despues si corresponde
+        // pedir los otros datos de Domicilio
     }
 
 }
