@@ -11,13 +11,29 @@
 public class Persona {
     private String rut;
     private String estadoCivil;
-    private Domicilio zonaGeo;
+    private String comuna
     private Estado datosPer;
     
-    public Persona(String rutPer, String sitCivil, Domicilio vivienda, Estado vive){
+    public Persona(String rutPer, String sitCivil, String c, Estado vive){
         this.rut = rutPer;
         this.estadoCivil = sitCivil;
-        this.zonaGeo = new Domicilio(vivienda.getRegion(), vivienda.getComuna());
+        this.comuna = c;
         this.datosPer = new Estado(vive.getNacimiento(), vive.getLugarNacimiento(), vive.getFallecido());
+    }
+
+    public void setRut(String r){
+        this.rut = r; 
+    }
+
+    public void setEstadoCivil(String e){
+        this.estadoCivil = e; 
+    }
+    
+    public void setComuna(String c){
+        this.comuna = c;
+    }
+    
+    public void acreditarFallecimiento(){
+    
     }
 }

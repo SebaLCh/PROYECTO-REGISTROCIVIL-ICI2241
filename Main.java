@@ -8,16 +8,22 @@
  *
  * @author sebal
  */
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.io.*;
+
 public class Main {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException//, InvalidDateException {
         System.out.println("Hello world");
         // preguntar por los datos para armar todas las clases pertenecientes a Persona
         // preguntar por bool extranjero, hacer un if para llamar a uno de los 2 constructores y despues si corresponde
-        // pedir los otros datos de Domicilio
+        
     }
 
 }

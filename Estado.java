@@ -17,5 +17,8 @@ public class Estado {
         this.nacimiento = new Fecha(n.getDia(), n.getMes(), n.getAno());
         this.lugarNacimiento = new Domicilio(l.getRegion(), l.getComuna());
     }
+    
+    public void imprimirCertificado(){
+    }
 
 }

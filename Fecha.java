@@ -18,4 +18,16 @@ public class Fecha {
         this.mes = m;
         this.ano = a;
     }
+    
+    public void setAlgo(){
+        this. = 
+    }
+    
+    public void setAlgo(){
+        this. = 
+    }
+        
+    public void setAlgo(){
+        this. = 
+    }
 }

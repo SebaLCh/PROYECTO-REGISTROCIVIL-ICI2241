@@ -22,4 +22,19 @@ public class Domicilio {
         this.region = r;
         this.comuna = c;
     }
+    
+    public void setAlgo(){
+        this. = 
+    }
+
+    public void setAlgo(){
+        this. = 
+    }
+    
+    public void cambioDomicilio(String r, String c){
+        System.out.println("Su region fué cambiada a :" + r);
+        this.region = r;
+        System.out.println("Su comuna fue cambiada a :" + c);
+        this.comuna = c;
+    }
 }

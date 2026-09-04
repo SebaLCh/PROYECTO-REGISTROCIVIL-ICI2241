@@ -17,5 +17,18 @@ public class Fallecido extends Estado{
         this.fechaDefuncion = new Fecha(d.getDia, d.getMes, d.getAno);
         this.causaFallecimiento = c;
     }
-
+    
+    public void setFechaDefuncion(){
+        this. = 
+    }
+    
+    public void setAlgo(){
+        this. = 
+    }
+    
+    public void imprimirCertificado(){
+        System.out.println("Seleccione el certificado a imprimir :");
+        System.our.println("1) Certificado de Nacimiento");
+        System.our.println("2) Certificado de Defuncion");
+    }
 }
