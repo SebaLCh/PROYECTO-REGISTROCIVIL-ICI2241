@@ -1,0 +1,25 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author sebal
+ */
+public class Domicilio {
+    private bool extranjero;
+    private String region;
+    private String comuna;
+    
+    public Domicilio(bool extranjero){
+        this.region = "Extranjero";
+        this.comuna = "Extranjero";
+    }
+    
+    public Domicilio(String r, String c){
+        this.region = r;
+        this.comuna = c;
+    }
+}
