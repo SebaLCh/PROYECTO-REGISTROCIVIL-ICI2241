@@ -16,9 +16,7 @@ import java.io.*;
 
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+    private static String archivoDatos = "registroCivil.txt"
     public static void main(String[] args) throws IOException//, InvalidDateException {
         System.out.println("Hello world");
         // preguntar por los datos para armar todas las clases pertenecientes a Persona
