@@ -57,8 +57,56 @@ public class MenuConsola {
         
     }
     
-    private void agregarPersona(){  
-    // se piden los datos de la persona
+    private void mostrarRegiones(){
+        for(int i = 0; i < 15; i++){
+            System.out.println(i + "." + registro.nombreRegion(i));
+        }
+    }
+    
+    private int pedirRegion(){
+        mostrarRegiones();
+        System.out.print("Ingrese el índice de la región: ");
+        int indice = Integer.parseInt(scan.nextLine().trim());
+        return indice;
+    }
+    
+    private Fecha pedirFecha(){
+        System.out.print("Dia: ");
+        int dia  = Integer.parseInt(scan.nextLine().trim());
+        System.out.print("Mes: ");
+        int mes = Integer.parseInt(scan.nextLine().trim());
+        System.out.print("Año: ");
+        int ano = Integer.parseInt(scan.nextLine().trim());
+        return new Fecha(dia, mes, ano);
+    }
+    
+
+    private void ingresarPersona(){  
+        System.out.print("Ingrese nombre de la persona: ");
+        String nombre = scan.nextLine().trim();
+        System.out.print("Ingrese rut de la persona (formato: 12345678-9): ");
+        String rut = scan.nextLine().trim();
+        System.out.print("La persona es extranjera? (s/n)");
+        boolean esExtranjero = scan.nextLine().trim().equals("s");
+       
+        Domicilio zonaGeo;
+        int region;
+        if(esExtranjero){   
+            zonaGeo = new Domicilio(true);
+            region = pedirRegion();
+            
+        }else{
+            region = pedirRegion();
+            System.out.print("Ingrese la comuna: ");
+            String comuna = scan.nextLine().trim();
+            zonaGeo = new Domicilio(registro.nombreRegion(region), comuna);
+        }
+        Fecha fechaNacimiento = pedirFecha();
+        Estado estado = new Estado(fechaNacimiento, zonaGeo);
+        Persona persona  = new Persona(nombre, rut, zonaGeo, estado);
+        registro.agregarPersona(region, persona);
+       
+        System.out.println("Persona ingresada con éxito\n");
     }
     private void editarPersona(){
     }
