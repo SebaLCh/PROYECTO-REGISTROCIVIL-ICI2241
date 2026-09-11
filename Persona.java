@@ -64,9 +64,4 @@ public class Persona // Aquí reunimos los datos y funciones de Persona.
     {
         this.datosPer = datosPer; // Guardamos aquí los datos personales recibido.
     }
-
-    public void acreditarFallecimiento() // Para registrar el fallecimiento de una persona.
-    {
-
-    }
 }
