@@ -1,34 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+public class Fallecido extends Estado // Aquí representamos Fallecido usando como base la clase Estado.
+{
+    private Fecha fechaDefuncion; // Para guardar la fecha de defunción.
+    private String causaFallecimiento; // Para guardar la causa de fallecimiento.
 
-/**
- *
- * @author sebal
- */
-public class Fallecido extends Estado{
-    private Fecha fechaDefuncion;
-    private String causaFallecimiento;
-    
-    public Fallecido(Estado e, Fecha d, String c, Domiclio d){
-        super(e, d);
-        this.fechaDefuncion = new Fecha(d.getDia, d.getMes, d.getAno);
-        this.causaFallecimiento = c;
+    public Fallecido(Estado estado, Fecha fechaDefuncion, String causaFallecimiento) // Para crear un objeto Fallecido con sus datos iniciales.
+    {
+        super(estado.getNacimiento(), estado.getLugarNacimiento()); // Enviamos los datos iniciales a la clase padre.
+        this.fechaDefuncion = fechaDefuncion; // Guardamos aquí la fecha de defunción recibido.
+        this.causaFallecimiento = causaFallecimiento; // Guardamos aquí la causa de fallecimiento recibido.
+        setFallecido(true); // Llamamos a setFallecido para continuar el proceso.
     }
-    
-    public void setFechaDefuncion(){
-        this. = 
+
+    public Fecha getFechaDefuncion() // Para obtener la fecha de defunción.
+    {
+        return fechaDefuncion; // Devolvemos la fecha de defunción.
     }
-    
-    public void setAlgo(){
-        this. = 
+
+    public void setFechaDefuncion(Fecha fechaDefuncion) // Para cambiar la fecha de defunción.
+    {
+        this.fechaDefuncion = fechaDefuncion; // Guardamos aquí la fecha de defunción recibido.
     }
-    
-    public void imprimirCertificado(){
-        System.out.println("Seleccione el certificado a imprimir :");
-        System.our.println("1) Certificado de Nacimiento");
-        System.our.println("2) Certificado de Defuncion");
+
+    public String getCausaFallecimiento() // Para obtener la causa de fallecimiento.
+    {
+        return causaFallecimiento; // Devolvemos la causa de fallecimiento.
+    }
+
+    public void setCausaFallecimiento(String causaFallecimiento) // Para cambiar la causa de fallecimiento.
+    {
+        this.causaFallecimiento = causaFallecimiento; // Guardamos aquí la causa de fallecimiento recibido.
+    }
+
+    @Override // Usamos nuestra propia versión del método heredado.
+    public void imprimirCertificado() // Para mostrar los datos del certificado.
+    {
+        System.out.println("Certificado de Defuncion");
+        super.imprimirCertificado(); // Reutilizamos el método de la clase padre.
+        System.out.println("Fecha de defuncion: " + fechaDefuncion);
+        System.out.println("Causa de fallecimiento: " + causaFallecimiento);
     }
 }
