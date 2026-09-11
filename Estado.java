@@ -1,8 +1,8 @@
 public class Estado // Aquí reunimos los datos y funciones de Estado.
 {
-    private Fecha nacimiento; // Para guardar la fecha de nacimiento.
-    private Domicilio lugarNacimiento; // Para guardar el lugar de nacimiento.
-    private boolean fallecido; // Para guardar el valor de fallecido.
+    protected Fecha nacimiento; // Para guardar la fecha de nacimiento.
+    protected Domicilio lugarNacimiento; // Para guardar el lugar de nacimiento.
+    protected boolean fallecido; // Para guardar el valor de fallecido.
 
     public Estado(Fecha n, Domicilio l) // Para crear un objeto Estado con sus datos iniciales.
     {
