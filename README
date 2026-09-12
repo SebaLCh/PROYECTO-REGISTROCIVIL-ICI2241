@@ -1,0 +1,50 @@
+# Sistema de registro civil
+
+Gestiona el registro de personas por región: nacimientos, defunciones, matrimonios y datos civiles, funciona con una interfaz de consola y de ventana(Swing).
+
+Requisitos:
+    Java JDK 8 u 11 (Oracle JDK)
+    Netbeans 21 (o inferior)o Eclipse
+
+Instalación
+1. Descomprimir el proyecto entregado
+2. Abir Netbeans o Eclipse y elegir abir proyecto (o importar -> proyectos existentes), apuntando a la carpeta del proyecto
+3. Verificar que el JDK configurado en el proyecto sea 8 u 11: click derecho en el proyecto -> propiedades ->fuentes/libraries
+4. Compilar el proyecto (build o clean and build)
+
+Ejecución
+1. Ejecutar la clase Main (botón "Run" sobre Main.java o shift+F6 en Netbeans)
+2. Al iniciar, el sistema va a intentar cargar los datos guardados desde registroCivil.txt (que está en la carpeta raíz del proyecto). Si el archivo no existe se cargan 3 personas de ejemplo para probar el sistema
+3. Aparecerá una ventana preguntando si se desea usar el sistema por consola o por ventana, elegir la opción deseada
+
+Consola
+El menú se muestra en la consola de salida de netbeans/eclipse. Se navega escribiendo el número de la opción deseada. Para terminar, elegir la opción 0 (Salir), solo así se guardan los cambios en el archivo de datos
+
+Ventana 
+Se abre una ventana con un panel de botones y un área de texto donde se muestran los resultados. Al cerrar la ventana, los datos se guardan automáticamente antes de salir
+
+Persistencia de datos
+Los datos se guardan en el archivo de texto registroCivil.txt, en un formato separado por '|':
+    Líneas que empiezan con R| representan una región
+    Líneas que comienzan con P| representan una persona, con 17 campos (región, nombre, rut, estado civil, comuna,fecha de nacimiento, lugar de nacimiento, si es extranjero, estado vivo/fallecido y datos de defunción si es el caso)
+
+El archivo se lee completo al iniciar el programa y se reescribe completo al salir
+- Si el programa se cierra de forma forzada los cambios de esa sesión no se guardan
+
+Estructura del proyecto
+    Main: punto de entrada, carga de datos, pregunta consola/ventana
+    RegistroCivil: contiene la lista de regiones y coordina las operaciones del sistema
+    Region: agrupa las personas registradas en una región 
+    Persona: datos personales, estado civil y comuna de una persona
+    Estado, Vivo, Fallecido: representan si la persona está viva o fallecida, con certificados distintos para cada caso
+    Domicilio: región y comuna de un lugar (nacimiento, defunción, etc.)
+    Fecha: representación de una fecha, validada internamente
+    MenuConsola/MenuVentana: interfaces de consola y ventana
+    PersistenciaTexto: lectura y escritura del archivo de datos
+    InvalidDateException, MatrimonioNoPermitidoException: excepciones del sistema
+
+Funcionalidades principales:
+    Gestión de regiones: agregar, listar, editar, eliminar, buscar
+    Gestión de personas: agregar, listar(por región), editar, eliminar, buscar por rut
+    Acreditar matrimonio entre dos personas (valida que ambas estén vivas y solteras)
+    Emitir certificado de nacimiento o defunción según el estado de la persona
