@@ -52,9 +52,18 @@ public class RegistroCivil // Aquí reunimos los datos y funciones de RegistroCi
         }
     }
 
-    public List<Region> getRegiones() // Para obtener la lista de regiones.
+    public int cantidadRegiones() // Para saber cuántas regiones hay registradas.
     {
-        return regiones; // Devolvemos la lista de regiones.
+        return regiones.size(); // Devolvemos la cantidad de regiones.
+    }
+
+    public Region obtenerRegion(int indice) // Para obtener una región individual por su posición.
+    {
+        if (!indiceValido(indice)) // Comprobamos que la posición sea válida.
+        {
+            return null; // Indicamos que la región no existe.
+        }
+        return regiones.get(indice); // Devolvemos solamente la región solicitada.
     }
 
     public void setRegiones(List<Region> regiones) // Para cambiar la lista de regiones.
@@ -120,19 +129,14 @@ public class RegistroCivil // Aquí reunimos los datos y funciones de RegistroCi
             return false; // Indicamos que la operación no se pudo realizar.
         }
         Region region = regiones.get(indiceRegion); // Guardamos la región para usarlo después.
-        if (region.getPersonas().containsKey(persona.getRut())) // Comprobamos si ese RUT ya está registrado.
-        {
-            return false; // Indicamos que la operación no se pudo realizar.
-        }
-        region.getPersonas().put(persona.getRut(), persona); // Llamamos a region.getPersonas para continuar el proceso.
-        return true; // Indicamos que la operación resultó correctamente.
+        return region.agregarPersona(persona); // Agregamos la persona mediante la región.
     }
 
     public Persona buscarPorRut(String rut) // Para encontrar una persona por su RUT.
     {
         for (Region region : regiones) // Recorremos los elementos uno por uno.
         {
-            Persona persona = region.getPersonas().get(rut); // Guardamos la persona para usarlo después.
+            Persona persona = region.buscarPersona(rut); // Buscamos la persona dentro de la región.
             if (persona != null) // Comprobamos si el dato existe antes de usarlo.
             {
                 return persona; // Devolvemos la persona.
@@ -147,7 +151,7 @@ public class RegistroCivil // Aquí reunimos los datos y funciones de RegistroCi
         {
             return null; // Indicamos que no encontramos ningún resultado.
         }
-        return regiones.get(indiceRegion).getPersonas().get(rut); // Devolvemos el valor de regiones.get(indice region).get personas().get(rut).
+        return regiones.get(indiceRegion).buscarPersona(rut); // Devolvemos la persona encontrada en la región.
     }
 
     public boolean editarPersona(int indiceRegion, String rut, String nombre, // Añadimos estos datos a la instrucción anterior.
@@ -170,7 +174,7 @@ public class RegistroCivil // Aquí reunimos los datos y funciones de RegistroCi
         {
             return false; // Indicamos que la operación no se pudo realizar.
         }
-        return regiones.get(indiceRegion).getPersonas().remove(rut) != null; // Devolvemos el valor de regiones.get(indice region).get personas().remove(rut) != null.
+        return regiones.get(indiceRegion).eliminarPersona(rut); // Eliminamos la persona mediante la región.
     }
 
     public void imprimirCertificado(String rut) // Para mostrar los datos del certificado.
@@ -201,48 +205,39 @@ public class RegistroCivil // Aquí reunimos los datos y funciones de RegistroCi
             "Una de las personas no se encuentra registrada."); // Usamos este dato para continuar el proceso.
         }
 
-        List<Persona> habilitados = personasHabilitadasParaMatrimonio(); // Guardamos las personas habilitadas para usarlo después.
-        Persona primeraPersona = buscarEnLista(habilitados, primerRut); // Guardamos el valor de primera persona para usarlo después.
-        Persona segundaPersona = buscarEnLista(habilitados, segundoRut); // Guardamos la segunda persona para usarlo después.
-
-        if (primeraPersona == null || segundaPersona == null) // Comprobamos si el dato existe antes de usarlo.
+        Persona primeraPersona = buscarPersonaHabilitadaParaMatrimonio(primerRut); // Buscamos la primera persona viva y soltera.
+        Persona segundaPersona = buscarPersonaHabilitadaParaMatrimonio(segundoRut); // Buscamos la segunda persona viva y soltera.
+        if (primeraPersona == null || segundaPersona == null) // Comprobamos si ambas personas pueden casarse.
         {
             throw new MatrimonioNoPermitidoException( // Detenemos la operación y avisamos el problema.
             "Ambas personas deben estar vivas y solteras."); // Usamos este dato para continuar el proceso.
         }
 
-        primeraPersona.setEstadoCivil("Casado/a"); // Llamamos a primeraPersona.setEstadoCivil para continuar el proceso.
-        segundaPersona.setEstadoCivil("Casado/a"); // Llamamos a segundaPersona.setEstadoCivil para continuar el proceso.
+        primeraPersona.setEstadoCivil("Casado/a"); // Cambiamos el estado civil de la primera persona.
+        segundaPersona.setEstadoCivil("Casado/a"); // Cambiamos el estado civil de la segunda persona.
     }
 
-    private List<Persona> personasHabilitadasParaMatrimonio() // Para reunir a las personas vivas y solteras.
+    private Persona buscarPersonaHabilitadaParaMatrimonio(String rut) // Para buscar sin construir ni devolver una colección.
     {
-        List<Persona> habilitados = new ArrayList<>(); // Creamos y guardamos las personas habilitadas para usarlo después.
-        for (Region region : regiones) // Recorremos los elementos uno por uno.
+        for (Region region : regiones) // Recorremos las regiones en su orden original.
         {
-            for (Persona persona : region.getPersonas().values()) // Recorremos los elementos uno por uno.
+            for (int i = 0; i < region.cantidadPersonas(); i++) // Recorremos las personas de la región.
             {
-                boolean estaViva = !persona.getDatosPer().isFallecido(); // Guardamos el valor de esta viva para usarlo después.
-                boolean estaSoltera = persona.getEstadoCivil().toLowerCase().startsWith("solter"); // Guardamos el valor de esta soltera para usarlo después.
-                if (estaViva && estaSoltera) // Comprobamos esta condición antes de continuar.
+                Persona persona = region.obtenerPersona(i); // Obtenemos solamente una persona.
+                if (estaHabilitadaParaMatrimonio(persona) && persona.getRut().equalsIgnoreCase(rut)) // Conservamos la primera coincidencia habilitada.
                 {
-                    habilitados.add(persona); // Llamamos a habilitados.add para continuar el proceso.
+                    return persona; // Devolvemos solamente la persona encontrada.
                 }
             }
         }
-        return habilitados; // Devolvemos las personas habilitadas.
+        return null; // Indicamos que no hay una persona habilitada con ese RUT.
     }
 
-    private Persona buscarEnLista(List<Persona> personas, String rut) // Para buscar una persona dentro de una lista.
+    private boolean estaHabilitadaParaMatrimonio(Persona persona) // Para comprobar si una persona puede casarse.
     {
-        for (Persona persona : personas) // Recorremos los elementos uno por uno.
-        {
-            if (persona.getRut().equalsIgnoreCase(rut)) // Comparamos los valores para saber si representan lo mismo.
-            {
-                return persona; // Devolvemos la persona.
-            }
-        }
-        return null; // Indicamos que no encontramos ningún resultado.
+        boolean estaViva = !persona.getDatosPer().isFallecido(); // Guardamos si la persona está viva.
+        boolean estaSoltera = persona.getEstadoCivil().toLowerCase().startsWith("solter"); // Guardamos si la persona está soltera.
+        return estaViva && estaSoltera; // Indicamos si cumple ambas condiciones.
     }
 
     private boolean indiceValido(int indice) // Para comprobar que una posición exista en la lista.

@@ -1,4 +1,3 @@
-import java.util.Map; // Para poder usar Map en esta clase.
 import java.util.Scanner; // Para poder usar Scanner en esta clase.
 
 public class MenuConsola // Aquí reunimos los datos y funciones de MenuConsola.
@@ -142,11 +141,11 @@ public class MenuConsola // Aquí reunimos los datos y funciones de MenuConsola.
 
     private void listarRegiones() // Para mostrar todas las regiones.
     {
-        for (int i = 0; i < registro.getRegiones().size(); i++) // Recorremos los elementos uno por uno.
+        for (int i = 0; i < registro.cantidadRegiones(); i++) // Recorremos los elementos uno por uno.
         {
-            Region region = registro.getRegiones().get(i); // Guardamos la región para usarlo después.
+            Region region = registro.obtenerRegion(i); // Guardamos la región para usarlo después.
             System.out.println(i + ". " + region.getNombre()
-                + " - personas: " + region.getPersonas().size());
+                + " - personas: " + region.cantidadPersonas());
         }
     }
 
@@ -192,7 +191,7 @@ public class MenuConsola // Aquí reunimos los datos y funciones de MenuConsola.
         else // Usamos esta alternativa cuando la condición anterior no se cumple.
         {
             System.out.println(region.getNombre() + " - personas: "
-                + region.getPersonas().size());
+                + region.cantidadPersonas());
         }
     }
 
@@ -200,7 +199,7 @@ public class MenuConsola // Aquí reunimos los datos y funciones de MenuConsola.
     {
         listarRegiones(); // Llamamos a listarRegiones para continuar el proceso.
         int indiceRegion = pedirIndiceRegion(); // Guardamos la posición de la región para usarlo después.
-        if (indiceRegion < 0 || indiceRegion >= registro.getRegiones().size()) // Comprobamos que la posición pertenezca a una región existente.
+        if (indiceRegion < 0 || indiceRegion >= registro.cantidadRegiones()) // Comprobamos que la posición pertenezca a una región existente.
         {
             System.out.println("Indice de region no valido.");
             return; // Devolvemos el valor de return.
@@ -235,20 +234,21 @@ public class MenuConsola // Aquí reunimos los datos y funciones de MenuConsola.
     {
         listarRegiones(); // Llamamos a listarRegiones para continuar el proceso.
         int indice = pedirIndiceRegion(); // Guardamos la posición elegida para usarlo después.
-        if (indice < 0 || indice >= registro.getRegiones().size()) // Comprobamos que la posición pertenezca a una región existente.
+        if (indice < 0 || indice >= registro.cantidadRegiones()) // Comprobamos que la posición pertenezca a una región existente.
         {
             System.out.println("Indice de region no valido.");
             return; // Devolvemos el valor de return.
         }
 
-        Map<String, Persona> personas = registro.getRegiones().get(indice).getPersonas(); // Guardamos las personas para usarlo después.
-        if (personas.isEmpty()) // Comprobamos si el texto o la lista está vacío.
+        Region region = registro.obtenerRegion(indice); // Obtenemos solamente la región solicitada.
+        if (region.estaVacia()) // Comprobamos si la región no tiene personas.
         {
             System.out.println("No hay personas en esta region.");
             return; // Devolvemos el valor de return.
         }
-        for (Persona persona : personas.values()) // Recorremos los elementos uno por uno.
+        for (int i = 0; i < region.cantidadPersonas(); i++) // Recorremos las personas una por una.
         {
+            Persona persona = region.obtenerPersona(i); // Obtenemos una persona individual.
             mostrarPersona(persona); // Llamamos a mostrarPersona para continuar el proceso.
         }
     }

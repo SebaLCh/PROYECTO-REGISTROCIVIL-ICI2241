@@ -104,7 +104,7 @@ public class PersistenciaTexto // Aquí reunimos los datos y funciones de Persis
         }
 
         Persona persona = new Persona(datos[2], datos[3], datos[4], datos[5], estado); // Creamos y guardamos la persona para usarlo después.
-        region.getPersonas().put(persona.getRut(), persona); // Llamamos a region.getPersonas para continuar el proceso.
+        region.guardarPersona(persona); // Conservamos la última persona leída si el RUT se repite en el archivo.
     }
 
     public void guardar(RegistroCivil registro) throws IOException // Para guardar los datos en el archivo.
@@ -114,12 +114,14 @@ public class PersistenciaTexto // Aquí reunimos los datos y funciones de Persis
         {
             escritor.write("# Archivo de datos del Registro Civil"); // Llamamos a escritor.write para continuar el proceso.
             escritor.newLine(); // Llamamos a escritor.newLine para continuar el proceso.
-            for (Region region : registro.getRegiones()) // Recorremos los elementos uno por uno.
+            for (int i = 0; i < registro.cantidadRegiones(); i++) // Recorremos las regiones una por una.
             {
+                Region region = registro.obtenerRegion(i); // Obtenemos solamente la región solicitada.
                 escritor.write("R|" + limpiar(region.getNombre())); // Llamamos a escritor.write para continuar el proceso.
                 escritor.newLine(); // Llamamos a escritor.newLine para continuar el proceso.
-                for (Persona persona : region.getPersonas().values()) // Recorremos los elementos uno por uno.
+                for (int j = 0; j < region.cantidadPersonas(); j++) // Recorremos las personas una por una.
                 {
+                    Persona persona = region.obtenerPersona(j); // Obtenemos solamente la persona solicitada.
                     escritor.write(lineaPersona(region, persona)); // Llamamos a escritor.write para continuar el proceso.
                     escritor.newLine(); // Llamamos a escritor.newLine para continuar el proceso.
                 }

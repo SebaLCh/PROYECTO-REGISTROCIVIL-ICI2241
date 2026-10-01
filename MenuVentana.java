@@ -115,11 +115,11 @@ public class MenuVentana extends JFrame // Aquí representamos MenuVentana usand
     private void listarRegiones() // Para mostrar todas las regiones.
     {
         StringBuilder texto = new StringBuilder("REGIONES\n\n"); // Creamos y guardamos el texto que mostraremos para usarlo después.
-        for (int i = 0; i < registro.getRegiones().size(); i++) // Recorremos los elementos uno por uno.
+        for (int i = 0; i < registro.cantidadRegiones(); i++) // Recorremos los elementos uno por uno.
         {
-            Region region = registro.getRegiones().get(i); // Guardamos la región para usarlo después.
+            Region region = registro.obtenerRegion(i); // Guardamos la región para usarlo después.
             texto.append(i).append(". ").append(region.getNombre()) // Añadimos estos datos a la instrucción anterior.
-                .append(" - personas: ").append(region.getPersonas().size()) // Añadimos esta parte al texto que estamos armando.
+                .append(" - personas: ").append(region.cantidadPersonas()) // Añadimos esta parte al texto que estamos armando.
                 .append('\n'); // Añadimos esta parte al texto que estamos armando.
         }
         salida.setText(texto.toString()); // Llamamos a salida.setText para continuar el proceso.
@@ -164,7 +164,7 @@ public class MenuVentana extends JFrame // Aquí representamos MenuVentana usand
             return; // Devolvemos el valor de return.
         }
         salida.setText("Region: " + region.getNombre() // Añadimos estos datos a la instrucción anterior.
-            + "\nPersonas registradas: " + region.getPersonas().size()); // Añadimos esta parte al valor anterior.
+            + "\nPersonas registradas: " + region.cantidadPersonas()); // Añadimos esta parte al valor anterior.
     }
 
     private void agregarPersona() // Para agregar una persona a una región.
@@ -209,14 +209,15 @@ public class MenuVentana extends JFrame // Aquí representamos MenuVentana usand
 
     private void listarPersonas(int indice) // Para mostrar las personas de una región.
     {
-        Region region = registro.getRegiones().get(indice); // Guardamos la región para usarlo después.
+        Region region = registro.obtenerRegion(indice); // Guardamos la región para usarlo después.
         StringBuilder texto = new StringBuilder("PERSONAS DE ") // Creamos y guardamos el texto que mostraremos para usarlo después.
             .append(region.getNombre().toUpperCase()).append("\n\n"); // Añadimos esta parte al texto que estamos armando.
-        for (Persona persona : region.getPersonas().values()) // Recorremos los elementos uno por uno.
+        for (int i = 0; i < region.cantidadPersonas(); i++) // Recorremos las personas una por una.
         {
+            Persona persona = region.obtenerPersona(i); // Obtenemos solamente la persona solicitada.
             texto.append(datosPersona(persona)).append('\n'); // Llamamos a texto.append para continuar el proceso.
         }
-        if (region.getPersonas().isEmpty()) texto.append("No hay personas registradas."); // Comprobamos si el texto o la lista está vacío.
+        if (region.estaVacia()) texto.append("No hay personas registradas."); // Comprobamos si la región no tiene personas.
         salida.setText(texto.toString()); // Llamamos a salida.setText para continuar el proceso.
     }
 
@@ -286,15 +287,15 @@ public class MenuVentana extends JFrame // Aquí representamos MenuVentana usand
 
     private int pedirRegion() // Para pedir al usuario que elija una región.
     {
-        if (registro.getRegiones().isEmpty()) // Comprobamos si el texto o la lista está vacío.
+        if (registro.cantidadRegiones() == 0) // Comprobamos si no hay regiones registradas.
         {
             mostrarError("No hay regiones registradas."); // Llamamos a mostrarError para continuar el proceso.
             return -1; // Devolvemos el valor de -1.
         }
-        String[] opciones = new String[registro.getRegiones().size()]; // Creamos y guardamos las opciones disponibles para usarlo después.
+        String[] opciones = new String[registro.cantidadRegiones()]; // Creamos y guardamos las opciones disponibles para usarlo después.
         for (int i = 0; i < opciones.length; i++) // Recorremos los elementos uno por uno.
         {
-            opciones[i] = registro.getRegiones().get(i).getNombre(); // Usamos este dato para continuar el proceso.
+            opciones[i] = registro.obtenerRegion(i).getNombre(); // Usamos este dato para continuar el proceso.
         }
         String seleccion = (String) JOptionPane.showInputDialog(this, // Guardamos el valor de seleccion para usarlo después.
         "Seleccione una region:", "Regiones", JOptionPane.QUESTION_MESSAGE, // Añadimos estos datos a la instrucción anterior.
